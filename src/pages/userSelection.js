@@ -46,6 +46,13 @@ class UserProfile extends React.Component {
 
         localStorage.setItem('currentUser', this.state.name);
     }
+
+    handleTest(e) {
+
+        if (e.ctrlKey && e.charCode == 13 ) {
+            localStorage.setItem("view", ((JSON.parse( localStorage.getItem("view")))+1)%2);
+        }
+    }
     render() {
 
         return (
@@ -63,6 +70,7 @@ class UserProfile extends React.Component {
                                 placeholder={"Your name"}
                                 value={this.state.username}
                                 onChange={this.handleChange}
+                                onKeyPress={this.handleTest}
                             />
 
                         </div>

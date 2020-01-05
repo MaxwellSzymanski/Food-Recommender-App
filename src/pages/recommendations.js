@@ -95,7 +95,7 @@ class Recommendations extends React.Component {
             stack: null,
 
         };
-        this.state.view=0;
+        this.state.view=localStorage.getItem("view");
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
@@ -1691,7 +1691,6 @@ class Recommendations extends React.Component {
                                 <span className="slider round" onClick={this.switchViews}></span>
                             </label>
                         </div>
-                        <div> <input type="checkbox" name="switchViews" value="switchViews" onClick={this.switchViews}/> </div>
                     </header>
                 </div>
             );

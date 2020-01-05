@@ -98,7 +98,7 @@ class GettingToKnow extends React.Component {
             nutrition: [],
             ingredients: [],
             similar: [],
-            view: 0,
+            view: localStorage.getItem("view"),
 
         };
 
@@ -490,33 +490,28 @@ class GettingToKnow extends React.Component {
         let explanationHtmlTemp = [];
         let similarMeals = this.getExplanation();
         let title=capitalizeFLetter(name);
-
         if(nutritionalInfo!==undefined){
-
             for (let i = 0; i < nutritionalInfo.length; i++){
-
                 nutritionalInfoHtmlTemp.push(
                     <div className = "popupText">
-
                         {nutritionLabels[i]}
                         <br/>
-
                     </div>);
                 nutritionalInfoHtmlTemp2.push(
                     <div className = "popupText">
-
                         {nutritionalInfo[i]}
                         <br/>
-
                     </div>);
-
             }
         }
+        let empty = true;
         if(similarMeals!==undefined){
+
             for (let i = 0; i < similarMeals.length; i++) {
                 let number=Math.floor(similarMeals[i]["matchfactor"]*100);
                 let color=perc2color(number);
                 if (number >= 60){
+                    empty= false;
                     explanationHtmlTemp.push(
                         <div className="popupText2">
                             <div className="container2">
@@ -530,35 +525,53 @@ class GettingToKnow extends React.Component {
                 }
             }
         }
-
-
-
-        nutritionalInfoHtml.push(
-            <div className="row">
-                <div className="Nutritioncolumn">
-                    <div className="popupTextTitle">
-                        Nutritional info:
-                        <br/>
+        if (empty){
+            nutritionalInfoHtml.push(
+                <div className="row">
+                    <div className="Nutritioncolumn">
+                        <div className="popupTextTitle">
+                            Nutritional info:
+                            <br/>
+                        </div>
+                        <div className="textrow">
+                            <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
+                            <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                        </div>
                     </div>
-                    <div className="textrow">
-                        <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
-                        <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                    <div className="column">
+                        <div className="popupTextTitle2">
+                            You did not try anything like this! Try it out!
+                            <br/>
+                        </div>
                     </div>
-
                 </div>
-                <div className="column">
-                    <div className="popupTextTitle2">
-                        Because you liked:
-                        <br/>
+
+            );
+        }
+        else{
+            nutritionalInfoHtml.push(
+                <div className="row">
+                    <div className="Nutritioncolumn">
+                        <div className="popupTextTitle">
+                            Nutritional info:
+                            <br/>
+                        </div>
+                        <div className="textrow">
+                            <div className="textcolumn1">{nutritionalInfoHtmlTemp}</div>
+                            <div className="textcolumn2">{nutritionalInfoHtmlTemp2}</div>
+                        </div>
+
                     </div>
-                    {explanationHtmlTemp}
+                    <div className="column">
+                        <div className="popupTextTitle2">
+                            Because you liked:
+                            <br/>
+                        </div>
+                        {explanationHtmlTemp}
+                    </div>
                 </div>
-            </div>
 
-        );
-
-
-
+            );}
         let html = [
             <Popup  modal trigger={<button title="nutrition" className="IconLayout NutritionIcon" >
             </button>} >
@@ -1477,12 +1490,7 @@ class GettingToKnow extends React.Component {
                         <Link to="/profile"><button className="profile" ><b> </b></button></Link>
                         <Link to="/recommendations"><button onClick={() => {localStorage.setItem("favorite", JSON.stringify(true));}} title="favorites" className="favorites" ><b> </b></button></Link>
                         <Link to="/recommendations"><button onClick={() => localStorage.setItem("favorite", JSON.stringify(false))} title="recommends" className="toRecommendButton" ><b> </b></button></Link>
-                        <div className="sliderBox" >
-                            <label className="switch">
-                                <input type="checkbox"></input>
-                                <span className="slider round" onClick={this.switchViews}></span>
-                            </label>
-                        </div>
+
                     </div>
                     {this.generateView()}
                 </header>

@@ -1231,7 +1231,7 @@ class Recommendations extends React.Component {
             let name =currentfavorite["name"];
             let image=currentfavorite["image"];
             let badges = [];
-       
+
             if(currentfavorite["tags"]==undefined){
 
             }

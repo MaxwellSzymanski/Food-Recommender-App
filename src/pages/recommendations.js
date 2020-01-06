@@ -12,6 +12,8 @@ import {  Popup as InfoPopup } from "semantic-ui-react";
 import ReactSwing from "react-swing";
 let lastItem = null;
 let lastAction  = null;
+let nameTitle = "Recommendations";
+
 export const icanswipe = styled.div`
   display: flex;
   transition: ${props => (props.sliding ? "none" : "transform 1s ease")};
@@ -91,11 +93,21 @@ class Recommendations extends React.Component {
             nutrition: [],
             ingredients: [],
             similar: [],
-            view: 1,
+            view: JSON.parse(localStorage.getItem("view")),
             stack: null,
 
         };
-        this.state.view=0;
+        let users = JSON.parse(localStorage.getItem('users'));
+
+        for (let i = users.length-1; i>=0; i--) {
+            if (users[i].Name === localStorage.getItem('currentUser')) {
+                if(users[i].FirstTime2){
+                users[i].FirstTime2 = false;
+                nameTitle = "Getting to know you";}
+            }
+            }
+        localStorage.setItem('users', JSON.stringify(users));
+
         this.socket=this.initialiseSocket();
         this.sendable=false;
 
@@ -1679,7 +1691,7 @@ class Recommendations extends React.Component {
             return (
                 <div className="App">
                     <header className="App-header">
-                        <div className="PageHeader"> <b className="PageTitle">Recommendations</b>
+                        <div className="PageHeader"> <b className="PageTitle">{nameTitle}</b>
                             <Link to="/profile"><button title="profile" className="profile" ><b> </b></button></Link>
                             <button className="favorites" title="favorites" onClick={this.goToFavorites} ><b></b></button>
                             <button className="toRecommendButton" title="recommends" onClick={this.goToRecommends} ><b></b></button>
@@ -1691,7 +1703,6 @@ class Recommendations extends React.Component {
                                 <span className="slider round" onClick={this.switchViews}></span>
                             </label>
                         </div>
-                        <div> <input type="checkbox" name="switchViews" value="switchViews" onClick={this.switchViews}/> </div>
                     </header>
                 </div>
             );

@@ -37,6 +37,7 @@ class UserProfile extends React.Component {
                 Disliked: [],
                 FirstTime: true,
                 FirstTime1: true,
+                FirstTime2: true,
                 booleansPreferences: [false, false, false],
                 booleanAllergies: [false, false, false]
             };
@@ -45,6 +46,13 @@ class UserProfile extends React.Component {
         }
 
         localStorage.setItem('currentUser', this.state.name);
+    }
+
+    handleTest(e) {
+
+        if (e.ctrlKey && e.charCode == 13 ) {
+            localStorage.setItem("view", ((JSON.parse( localStorage.getItem("view")))+1)%2);
+        }
     }
     render() {
 
@@ -63,6 +71,7 @@ class UserProfile extends React.Component {
                                 placeholder={"Your name"}
                                 value={this.state.username}
                                 onChange={this.handleChange}
+                                onKeyPress={this.handleTest}
                             />
 
                         </div>
